@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
+  <!-- to auto refresh page every 1 seconds -->
+  <!-- <meta http-equiv="refresh" content="1" > -->
 </head>
 <body>
 
@@ -59,6 +61,24 @@
 
 <script>
 
+function playSound(event){
+    const audio=document.querySelector(`audio[data-key='${event.keyCode}']`);
+    if(!audio) return
+    const key=document.querySelector(`.key[data-key='${event.keyCode}']`);
+    audio.currentTime=0
+    audio.play();
+    key.classList.add("playing")
+  }
+  
+  function removeTransition(e){
+    if(e.propertyName!=='transform') return // skipping extra transitions
+    e.target.classList.remove('playing');
+  }
+
+  const keys=document.querySelectorAll(".keys")
+  keys.forEach(key=>key.addEventListener("transitionend",removeTransition))
+
+  window.addEventListener("keydown",playSound );
 </script>
 
 
